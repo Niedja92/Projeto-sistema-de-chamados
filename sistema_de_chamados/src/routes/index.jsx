@@ -4,6 +4,7 @@ import SingIn from "../pages/SingIn";
 import SingUp from "../pages/SingUp";
 import Dashboard from "../pages/Dashboard";
 import Private from "./Private";
+import Profile from "../pages/Profile";
 
 export default function RoutesApp() {
   return (
@@ -16,6 +17,14 @@ export default function RoutesApp() {
         element={
           <Private>
             <Dashboard />
+          </Private>
+        }
+      />
+      <Route
+        path="/profile"
+        element={
+          <Private>
+            <Profile />
           </Private>
         }
       />
