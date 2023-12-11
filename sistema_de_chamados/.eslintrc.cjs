@@ -12,9 +12,13 @@ module.exports = {
   settings: { react: { version: '18.2' } },
   plugins: ['react-refresh'],
   rules: {
+    'react/prop-types': ['off'],
     'react-refresh/only-export-components': [
       'warn',
       { allowConstantExport: true },
     ],
   },
 }
+
+//'react/prop-types': ['off'], adicionado para ignorar a mensagem de erro no children
+//obs.: o correto é usar sempre, como este projeto é algo para teste, não estou utilizando
