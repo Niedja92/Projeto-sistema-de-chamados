@@ -5,6 +5,8 @@ import SingUp from "../pages/SingUp";
 import Dashboard from "../pages/Dashboard";
 import Private from "./Private";
 import Profile from "../pages/Profile";
+import Customers from "../pages/Customers";
+import New from "../pages/New";
 
 export default function RoutesApp() {
   return (
@@ -16,6 +18,7 @@ export default function RoutesApp() {
         path="/dashboard"
         element={
           <Private>
+            s
             <Dashboard />
           </Private>
         }
@@ -25,6 +28,22 @@ export default function RoutesApp() {
         element={
           <Private>
             <Profile />
+          </Private>
+        }
+      />
+      <Route
+        path="/customers"
+        element={
+          <Private>
+            <Customers />
+          </Private>
+        }
+      />
+      <Route
+        path="/new"
+        element={
+          <Private>
+            <New />
           </Private>
         }
       />
