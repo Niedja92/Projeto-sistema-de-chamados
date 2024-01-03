@@ -8,19 +8,21 @@ import { collection, getDoc, getDocs, doc, addDoc } from "firebase/firestore";
 import { toast } from "react-toastify";
 
 import { AuthContext } from "../../contexts/auth";
+import { useParams } from "react-router-dom";
 
 const listRef = collection(db, "customers");
 
 export default function New() {
   const { user } = useContext(AuthContext);
+  const { id } = useParams();
 
   const [customers, setCustomers] = useState([]);
   const [loadCustomer, setLoadCustomer] = useState(true);
   const [customerSelected, setCustomerSelected] = useState(0);
-
   const [complemento, setComplemento] = useState("");
   const [assunto, setAssunto] = useState("Suporte");
   const [status, setStatus] = useState("Aberto");
+  const [idCustomer, setIdCustomer] = useState(false);
 
   useEffect(() => {
     async function loadCustomers() {
@@ -35,20 +37,47 @@ export default function New() {
           });
           if (snapshot.docs.size === 0) {
             console.log("NENHUMA EMPRESA ENCONTRADA");
-            setCustomers([{ id: 1, nomeFantasia: "FREELA" }]);
+            setCustomers([{ id: "1", nomeFantasia: "FREELA" }]);
             setLoadCustomer(false);
             return;
           }
 
           setCustomers(lista);
-          setLoadCustomer(false); // para a execução do LoadCustomer
+          setLoadCustomer(false); // para a execução do loadCustomer
+
+          if (id) {
+            loadId(lista);
+          }
         })
         .catch((error) => {
+          console.log("ERRO AO BUSCAR CLIENTES", error);
           setLoadCustomer(false);
-          setCustomers([{ id: 1, nomeFantasia: "FREELA" }]);
+          setCustomers([{ id: "1", nomeFantasia: "FREELA" }]);
         });
     }
-  }, []);
+
+    loadCustomers();
+  }, [id]);
+
+  async function loadId() {
+    const docRef = doc(db, "chamados", id);
+    await getDocs(docRef)
+      .then((snapshot) => {
+        setAssunto(snapshot.data().assunto);
+        setStatus(snapshot.data().status);
+        setComplemento(snapshot.data().complemento);
+
+        let index = lista.findIndex(
+          (item) => item.id === snapshot.data().clienteId
+        );
+        setCustomerSelected(index);
+        setIdCustomer(true);
+      })
+      .catch((error) => {
+        console.log(error);
+        setIdCustomer(false);
+      });
+  }
 
   function handleOptionChange(e) {
     setStatus(e.target.value);
@@ -65,6 +94,11 @@ export default function New() {
 
   async function handleRegister(e) {
     e.preventDefault();
+
+    if (idCustomer) {
+      alert("EDITANDO CHAMADO");
+      return;
+    }
 
     // Registrar um chamado
     await addDoc(collection(db, "chamados"), {
