@@ -15,6 +15,7 @@ import {
 } from "firebase/firestore";
 import { db } from "../../services/firebaseConection";
 import { format } from "date-fns";
+import Modal from "../../components/Modal";
 
 const listRef = collection(db, "chamados");
 
@@ -26,6 +27,9 @@ export default function Dashboard() {
   const [isEmpty, setIsEmpty] = useState(false);
   const [lastDocs, setLastDocs] = useState();
   const [loadingMore, setLoadingMore] = useState(false);
+
+  const [showPostModal, setShowPostModal] = useState(false);
+  const [detail, setDetail] = useState();
 
   useEffect(() => {
     async function loadChamados() {
@@ -82,6 +86,11 @@ export default function Dashboard() {
     );
     const querySnapshot = await getDocs(q);
     await updateState(querySnapshot);
+  }
+
+  function toggleModal(item) {
+    setShowPostModal(!showPostModal);
+    setDetail(item);
   }
 
   if (loading) {
@@ -157,15 +166,16 @@ export default function Dashboard() {
                           <button
                             className="action"
                             style={{ backgroundColor: "#3583f6" }}
+                            onClick={() => toggleModal(item)}
                           >
-                            <FiSearch color="#fff" size={25} />
+                            <FiSearch color="#fff" size={17} />
                           </button>
                           <Link
                             to={`/new/${item.id}`}
                             className="action"
                             style={{ backgroundColor: "#f6a935" }}
                           >
-                            <FiEdit2 color="#fff" size={25} />
+                            <FiEdit2 color="#fff" size={17} />
                           </Link>
                         </td>
                       </tr>
@@ -209,6 +219,13 @@ export default function Dashboard() {
           )}
         </>
       </div>
+
+      {showPostModal && (
+        <Modal
+          conteudo={detail}
+          close={() => setShowPostModal(!showPostModal)}
+        />
+      )}
     </div>
   );
 }
