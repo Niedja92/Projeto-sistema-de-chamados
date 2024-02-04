@@ -18,7 +18,6 @@ export default function RoutesApp() {
         path="/dashboard"
         element={
           <Private>
-            s
             <Dashboard />
           </Private>
         }
