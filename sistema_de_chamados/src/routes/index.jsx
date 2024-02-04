@@ -11,7 +11,7 @@ import New from "../pages/New";
 export default function RoutesApp() {
   return (
     <Routes>
-      <Route path="/Projeto-sistema-de-chamados" element={<SingIn />} />
+      <Route path="/" element={<SingIn />} />
       <Route path="/register" element={<SingUp />} />
 
       <Route
