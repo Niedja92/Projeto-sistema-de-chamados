@@ -1,6 +1,6 @@
 # 💻 Sistema de Chamados
 
-![design do projeto](./sistemas_de_chamados/src/assets/dashboard.png)
+![Design do projeto](./sistemas_de_chamados/src/assets/dashboard.png)
 
 ## 📌 Sobre o projeto
 
